@@ -18,5 +18,8 @@ namespace restapi.Models
 
         [Required, StringLength(200)]
         public string Link { get; set; }
+        
+        [StringLength(200)]
+        public string ImageUrl { get; set; }
     }
 }

@@ -16,7 +16,7 @@ namespace restapi.Data
         public DbSet<ProductDetail> ProductDetail { get; set; }
         public DbSet<Order> Order { get; set; }
         public DbSet<OrderDetail> OrderDetail { get; set; }
-        public DbSet<Event> Events { get; set; }
+        public DbSet<Event> Event { get; set; }
 
     }
 }

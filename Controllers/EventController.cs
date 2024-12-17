@@ -20,14 +20,14 @@ namespace restapi.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Event>>> GetEvents()
         {
-            return await _context.Events.ToListAsync();
+            return await _context.Event.ToListAsync();
         }
 
         // GET: api/Event/{id}
         [HttpGet("{id}")]
         public async Task<ActionResult<Event>> GetEvent(int id)
         {
-            var eventItem = await _context.Events.FindAsync(id);
+            var eventItem = await _context.Event.FindAsync(id);
 
             if (eventItem == null)
             {
@@ -41,7 +41,7 @@ namespace restapi.Controllers
         [HttpPost]
         public async Task<ActionResult<Event>> CreateEvent(Event eventItem)
         {
-            _context.Events.Add(eventItem);
+            _context.Event.Add(eventItem);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction(nameof(GetEvent), new { id = eventItem.Id }, eventItem);
@@ -64,7 +64,7 @@ namespace restapi.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!_context.Events.Any(e => e.Id == id))
+                if (!_context.Event.Any(e => e.Id == id))
                 {
                     return NotFound();
                 }
@@ -81,13 +81,13 @@ namespace restapi.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteEvent(int id)
         {
-            var eventItem = await _context.Events.FindAsync(id);
+            var eventItem = await _context.Event.FindAsync(id);
             if (eventItem == null)
             {
                 return NotFound();
             }
 
-            _context.Events.Remove(eventItem);
+            _context.Event.Remove(eventItem);
             await _context.SaveChangesAsync();
 
             return NoContent();
