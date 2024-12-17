@@ -13,5 +13,7 @@ namespace restapi.Data
         public DbSet<Category> Category { get; set; }
         public DbSet<ProductImage> ProductImage { get; set; }
 
+        public DbSet<ProductDetail> ProductDetail { get; set; }
+
     }
 }
