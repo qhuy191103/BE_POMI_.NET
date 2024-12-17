@@ -6,20 +6,9 @@ namespace restapi.Models
     {
         [Key]
         public int Id { get; set; }
-
-        [Required, StringLength(100)]
-        public string Title { get; set; }
-
-        [StringLength(100)]
-        public string Subtitle { get; set; }
-
-        [StringLength(500)]
+        [Required]public string Title { get; set; } public string Subtitle { get; set; }
         public string Description { get; set; }
-
-        [Required, StringLength(200)]
-        public string Link { get; set; }
-        
-        [StringLength(200)]
+        [Required] public string Link { get; set; }
         public string ImageUrl { get; set; }
     }
 }
