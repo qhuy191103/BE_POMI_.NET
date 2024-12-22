@@ -7,7 +7,7 @@ namespace restapi.Models
         [Key]
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "Full Name is required")]
+     
         [StringLength(100)]
         public string FullName { get; set; }
 
