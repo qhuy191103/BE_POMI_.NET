@@ -4,12 +4,15 @@ using restapi.Models;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.Data;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace YourNamespace.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class UsersController : ControllerBase
     {
         private readonly ApplicationDBcontext _context;
@@ -41,8 +44,8 @@ namespace YourNamespace.Controllers
         }
 
         // POST: api/users
-        [HttpPost]
-        public async Task<IActionResult> CreateUser([FromBody] User user)
+        [HttpPost("register")]
+        public async Task<IActionResult> RegisterUser([FromBody] User user)
         {
             // Kiểm tra xem người dùng đã tồn tại hay chưa
             var existingUser = await _context.User
@@ -105,6 +108,21 @@ namespace YourNamespace.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
+        }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] restapi.Models.LoginRequest loginRequest)
+        {
+            // Kiểm tra xem người dùng đã tồn tại hay chưa dựa trên email và mật khẩu
+            var existingUser = await _context.User
+                .FirstOrDefaultAsync(u => u.Email == loginRequest.Email && u.Password == loginRequest.Password);
+
+            if (existingUser == null)
+            {
+                return BadRequest(new { message = "Sai email hoặc mật khẩu" });
+            }
+
+            return Ok(new { message = "Đăng nhập thành công", user = existingUser });
         }
     }
 }
