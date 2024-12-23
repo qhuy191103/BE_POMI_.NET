@@ -14,8 +14,8 @@ builder.Services.AddSwaggerGen();
 // Configure DbContext
 builder.Services.AddDbContext<ApplicationDBcontext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-//
-builder.Services.AddControllers().AddJsonOptions(options => { options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve; });
+
+//builder.Services.AddControllers().AddJsonOptions(options => { options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve; });
 
 builder.Services.AddRazorPages();
 
