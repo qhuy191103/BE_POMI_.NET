@@ -12,8 +12,8 @@ using restapi.Data;
 namespace restapi.Migrations
 {
     [DbContext(typeof(ApplicationDBcontext))]
-    [Migration("20241225122722_AddCartAttributes")]
-    partial class AddCartAttributes
+    [Migration("20241228050645_Invoice")]
+    partial class Invoice
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -126,6 +126,65 @@ namespace restapi.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Event");
+                });
+
+            modelBuilder.Entity("restapi.Models.Invoice", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("InvoiceDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Notes")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ShippingAddress")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Invoices");
+                });
+
+            modelBuilder.Entity("restapi.Models.InvoiceDetail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("InvoiceId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InvoiceId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("InvoiceDetails");
                 });
 
             modelBuilder.Entity("restapi.Models.Order", b =>
@@ -272,6 +331,10 @@ namespace restapi.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("UserImage")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.ToTable("User");
@@ -294,6 +357,25 @@ namespace restapi.Migrations
                     b.Navigation("Product");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("restapi.Models.InvoiceDetail", b =>
+                {
+                    b.HasOne("restapi.Models.Invoice", "Invoice")
+                        .WithMany("InvoiceDetails")
+                        .HasForeignKey("InvoiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("restapi.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Invoice");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("restapi.Models.OrderDetail", b =>
@@ -329,6 +411,11 @@ namespace restapi.Migrations
             modelBuilder.Entity("restapi.Models.Category", b =>
                 {
                     b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("restapi.Models.Invoice", b =>
+                {
+                    b.Navigation("InvoiceDetails");
                 });
 
             modelBuilder.Entity("restapi.Models.Order", b =>

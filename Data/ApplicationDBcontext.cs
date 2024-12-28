@@ -16,6 +16,8 @@ namespace restapi.Data
         public DbSet<Event> Event { get; set; }
         public DbSet<User> User { get; set; }
         public DbSet<Cart> Carts { get; set; }
+        public DbSet<Invoice> Invoices { get; set; }
+        public DbSet<InvoiceDetail> InvoiceDetails { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
            
@@ -23,6 +25,7 @@ namespace restapi.Data
                 .HasOne(p => p.Category)
                 .WithMany(c => c.Products)
                 .HasForeignKey(p => p.CategoryId);
+           
         }
     }
 }

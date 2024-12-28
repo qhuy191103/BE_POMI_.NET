@@ -34,8 +34,7 @@ public class CartController : ControllerBase
             });
         }
 
-        // Kiểm tra danh sách kích thước sản phẩm
-        // Kiểm tra danh sách kích thước sản phẩm
+     
         if (product.Sizes == null || product.Sizes.Count == 0)
         {
             return BadRequest(new AddToCartResponse
@@ -112,6 +111,7 @@ public class CartController : ControllerBase
             c.CartId,
             c.ProductId,
             ProductName = c.Product.Name,
+            ProductImage = c.Product.ImageUrl,
             c.Quantity,
             c.Price,
             c.DateAdded,
@@ -122,6 +122,26 @@ public class CartController : ControllerBase
         });
 
         return Ok(new { value = 1, data = response });
+    }
+    [HttpGet("GetCartTotalPrice")]
+    public async Task<IActionResult> GetCartTotalPrice(int userId)
+    {
+        // Lấy tất cả sản phẩm trong giỏ hàng của người dùng
+        var cartItems = await _context.Carts
+            .Where(c => c.UserId == userId)
+            .ToListAsync();
+
+        // Kiểm tra nếu giỏ hàng rỗng
+        if (cartItems == null || cartItems.Count == 0)
+        {
+            return Ok(new { value = 0, message = "Giỏ hàng trống.", totalPrice = 0 });
+        }
+
+        // Tính tổng giá tiền
+        decimal totalPrice = cartItems.Sum(c => c.Price);
+
+        // Trả về tổng giá tiền
+        return Ok(new { value = 1, message = "Tính tổng giá thành công.", totalPrice = totalPrice });
     }
 
     [HttpDelete("DeleteFromCart")]

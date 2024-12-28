@@ -18,6 +18,7 @@ namespace restapi.Models
 
         [StringLength(200)]
         public string Address { get; set; }
+        public string UserImage { get; set; }
 
         [Required(ErrorMessage = "Password is required")]
         [DataType(DataType.Password)]
