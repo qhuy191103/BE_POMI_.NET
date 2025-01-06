@@ -11,6 +11,7 @@ namespace restapi.Models
         public decimal TotalPrice { get; set; }
         public string ShippingAddress { get; set; }
         public string Notes { get; set; }
-        public List<InvoiceDetail> InvoiceDetails { get; set; } = new List<InvoiceDetail>();
+        public ICollection<InvoiceDetail> InvoiceDetails { get; set; } = new List<InvoiceDetail>();
     }
+
 }

@@ -20,5 +20,6 @@ namespace restapi.Models
         public List<string> IceLevels { get; set; } = new List<string>(); public string Note { get; set; }
         [Range(1, int.MaxValue)] 
         public int Quantity { get; set; }
+        public bool IsDeleted { get; set; }
     }
 }

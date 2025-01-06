@@ -17,16 +17,19 @@ namespace restapi.Controllers
         }
 
         // GET: api/Product
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
         {
             return await _context.Product
+                                 .Where(p => !p.IsDeleted) // Lọc sản phẩm chưa bị xóa
                                  .Include(p => p.Category)
                                  .ToListAsync();
         }
 
+
         // GET: api/Product/{id}
-        [HttpGet("{id}")]
+        [HttpGet("{id}")]     
         public async Task<ActionResult<Product>> GetProduct(int id)
         {
             var product = await _context.Product
@@ -95,16 +98,17 @@ namespace restapi.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProduct(int id)
         {
-            var product = await _context.Product.FindAsync(id);
+            var product = await _context.Product.FirstOrDefaultAsync(p => p.Id == id);
+
             if (product == null)
             {
                 return NotFound();
             }
-
-            _context.Product.Remove(product);
+            product.IsDeleted = true;
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
+
     }
 }

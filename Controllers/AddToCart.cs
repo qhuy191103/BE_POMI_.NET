@@ -34,22 +34,9 @@ public class CartController : ControllerBase
             });
         }
 
-     
-        if (product.Sizes == null || product.Sizes.Count == 0)
-        {
-            return BadRequest(new AddToCartResponse
-            {
-                Value = 0,
-                Message = "Sản phẩm không có kích thước hợp lệ.",
-                CalculatedPrice = 0
-            });
-        }
-
-        // Convert List<string> to array before using Array.IndexOf
+        // Kiểm tra kích thước hợp lệ
         var sizes = product.Sizes.ToArray();
         int sizeIndex = Array.IndexOf(sizes, request.SelectedSize);
-
-        // Nếu kích thước không hợp lệ, trả về lỗi
         if (sizeIndex == -1)
         {
             return BadRequest(new AddToCartResponse
@@ -62,29 +49,27 @@ public class CartController : ControllerBase
 
         // Tính giá tăng thêm cho kích thước
         decimal sizePrice = sizeIndex * 5000;
-
-        // Tính giá tổng
         decimal totalPrice = (product.Price + sizePrice) * request.Quantity;
 
-        // Tạo đối tượng Cart mới
+        // Tạo đối tượng Cart mới và lưu thông tin vị trí
         var newCartItem = new Cart
         {
             UserId = request.UserId,
             ProductId = request.ProductId,
             Quantity = request.Quantity,
-            Price = totalPrice, // Giá đã tính toán
+            Price = totalPrice,
             DateAdded = DateTime.Now,
             SelectedSize = request.SelectedSize,
             SelectedSugar = request.SelectedSugar,
             SelectedIce = request.SelectedIce,
-            Note = request.Note
+            Note = request.Note,
+           
         };
 
         // Lưu vào cơ sở dữ liệu
         _context.Carts.Add(newCartItem);
         await _context.SaveChangesAsync();
 
-        // Trả về phản hồi
         return Ok(new AddToCartResponse
         {
             Value = 1,
@@ -118,11 +103,13 @@ public class CartController : ControllerBase
             c.SelectedSize,
             c.SelectedSugar,
             c.SelectedIce,
-            c.Note
+            c.Note,
+          
         });
 
         return Ok(new { value = 1, data = response });
     }
+
     [HttpGet("GetCartTotalPrice")]
     public async Task<IActionResult> GetCartTotalPrice(int userId)
     {

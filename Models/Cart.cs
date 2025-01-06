@@ -48,5 +48,6 @@ namespace restapi.Models
 
         [StringLength(200)]
         public string Note { get; set; } // Ghi chú
+
     }
 }
