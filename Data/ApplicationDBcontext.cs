@@ -25,10 +25,6 @@ namespace restapi.Data
                 .HasOne(p => p.Category)
                 .WithMany(c => c.Products)
                 .HasForeignKey(p => p.CategoryId);
-            modelBuilder.Entity<InvoiceDetail>()
-                .HasOne(d => d.Invoice)
-                .WithMany(i => i.InvoiceDetails)
-                .OnDelete(DeleteBehavior.Restrict);
 
         }
     }

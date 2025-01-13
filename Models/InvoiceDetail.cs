@@ -12,8 +12,6 @@
         public string SelectedSugar { get; set; }
         public string SelectedIce { get; set; }
         public string Note { get; set; }
-        public int InvoiceId { get; set; } 
-        public Invoice Invoice { get; set; }
     }
 
 }

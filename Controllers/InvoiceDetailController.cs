@@ -24,8 +24,7 @@ namespace YourNamespace.Controllers
         [HttpGet("{invoiceId}")]
         public async Task<ActionResult<IEnumerable<InvoiceDetail>>> GetInvoiceDetails(int invoiceId)
         {
-            var invoiceDetails = await _context.InvoiceDetails
-                .Where(d => d.InvoiceId == invoiceId)
+            var invoiceDetails = await _context.InvoiceDetails     
                 .ToListAsync();
 
             if (invoiceDetails == null || !invoiceDetails.Any())
@@ -49,7 +48,7 @@ namespace YourNamespace.Controllers
             _context.InvoiceDetails.Add(invoiceDetail);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetInvoiceDetails), new { invoiceId = invoiceDetail.InvoiceId }, invoiceDetail);
+            return CreatedAtAction(nameof(GetInvoiceDetails), invoiceDetail);
         }
 
         // DELETE: api/InvoiceDetail/{id}
