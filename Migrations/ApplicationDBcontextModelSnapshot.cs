@@ -163,7 +163,7 @@ namespace restapi.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("InvoiceId")
+                    b.Property<int?>("InvoiceId")
                         .HasColumnType("int");
 
                     b.Property<string>("Note")
@@ -383,13 +383,9 @@ namespace restapi.Migrations
 
             modelBuilder.Entity("restapi.Models.InvoiceDetail", b =>
                 {
-                    b.HasOne("restapi.Models.Invoice", "Invoice")
+                    b.HasOne("restapi.Models.Invoice", null)
                         .WithMany("InvoiceDetails")
-                        .HasForeignKey("InvoiceId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Invoice");
+                        .HasForeignKey("InvoiceId");
                 });
 
             modelBuilder.Entity("restapi.Models.OrderDetail", b =>
