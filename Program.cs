@@ -16,7 +16,16 @@
 //     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // //builder.Services.AddControllers().AddJsonOptions(options => { options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve; });
-
+// // Configure DbContext
+// builder.Services.AddDbContext<ApplicationDBcontext>(options =>
+//     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
+//         sqlServerOptionsAction: sqlOptions =>
+//         {
+//             sqlOptions.EnableRetryOnFailure(
+//                 maxRetryCount: 3,
+//                 maxRetryDelay: TimeSpan.FromSeconds(30),
+//                 errorNumbersToAdd: null);
+//         }));
 // builder.Services.AddRazorPages();
 
 // var app = builder.Build();
@@ -38,6 +47,12 @@
 // app.MapControllers();
 
 // app.Run();
+
+
+
+// ================== TEST =================
+
+
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
@@ -72,7 +87,15 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.ReferenceHandler =
             System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
     });
-
+builder.Services.AddDbContext<ApplicationDBcontext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
+        sqlServerOptionsAction: sqlOptions =>
+        {
+            sqlOptions.EnableRetryOnFailure(
+                maxRetryCount: 3,
+                maxRetryDelay: TimeSpan.FromSeconds(30),
+                errorNumbersToAdd: null);
+        }));
 var app = builder.Build();
 
 // Enable Swagger for both Development and Production
